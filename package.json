@@ -1,0 +1,29 @@
+{
+  "name": "optimise-page-cli",
+  "version": "1.0.0",
+  "description": "A CLI tool to optimize web pages using Node.js and TypeScript.",
+  "main": "optimise-page.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx optimise-page.ts"
+  },
+  "dependencies": {
+    "@types/jsdom": "^21.1.7",
+    "chrome-finder": "^1.0.0",
+    "dotenv": "^16.5.0",
+    "jsdom": "^26.1.0",
+    "node-fetch": "^3.0.0",
+    "openai": "^4.97.0",
+    "playwright-core": "^1.0.0",
+    "turndown": "^7.0.0",
+    "yargs": "^17.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "tsx": "^3.0.0",
+    "vitest": "^3.1.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
