@@ -275,6 +275,22 @@ async function optimizeCopy(markdown: string, pageType: string, url: string): Pr
   let slug = urlObj.pathname.replace(/^\/|\/$/g, '');
   slug = slug || 'home';
 
+  // Handle blog index pages
+  let posts: BlogPost[] = [];
+  if (pageType === 'blog') {
+    const result = extractBlogPosts(markdown);
+    posts = result.posts;
+    
+    // Skip if not enough posts
+    if (posts.length < 2) {
+      pageType = 'page'; // Fall back to regular page
+    } else {
+      pageType = 'blog-index';
+      slug = 'blog';
+      markdown = result.cleanBody;
+    }
+  }
+
   // Extract contact information
   const emails = extractEmailAddresses(markdown);
   const phones = extractPhoneNumbers(markdown);
@@ -330,6 +346,12 @@ slug: "${slug}"
 metaTitle: "<best-fit title ≤ 60 chars>"
 description: "<1-sentence summary ≤ 155 chars>"
 ${address ? `address: "${address}"` : ''}
+${pageType === 'blog-index' ? `posts:
+${posts.map(post => `  - title: "${post.title}"
+    excerpt: "${post.excerpt}"
+    slug: "${post.slug}"
+    date: ${post.date ? `"${post.date}"` : 'null'}
+    heroImage: null`).join('\n')}` : ''}
 cta:
   ${contactCTAs.map(cta => `  - { text: "${cta.text}", href: "${cta.href}" }`).join('\n  ')}
 ${pageType === 'contact' ? `form:
